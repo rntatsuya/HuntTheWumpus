@@ -25,7 +25,7 @@ public class Wumpus extends Agent {
 	private boolean moveTextRight;
 	private int count;
 	private boolean faceRight;
-	
+
 	public Wumpus(int x, int y, Vertex home) {
 		super(x,y);
 		homeRoom = home;
@@ -39,23 +39,23 @@ public class Wumpus extends Agent {
 		gen = new Random();
 		count = 0;
 		faceRight = false;
-		try {               
-    		image = ImageIO.read(new File("wumpus.png"));
-    		imageRight = ImageIO.read(new File("wumpusRight.png"));
+		try {
+    		image = ImageIO.read(new File("./images/wumpus.png"));
+    		imageRight = ImageIO.read(new File("./images/wumpusRight.png"));
     	}
     	catch (IOException e) {
 	    	//Not handled.
 	    }
 	}
-	
+
 	public Vertex getRoom() {
 		return homeRoom;
 	}
-	
+
 	public void changeRoom(Vertex nextRoom) {
 		homeRoom = nextRoom;
 	}
-	// called when the gameEnded 
+	// called when the gameEnded
 	public void gameEnded() {
 		gameEnded = true;
 	}
@@ -71,7 +71,7 @@ public class Wumpus extends Agent {
 	public void befriend() {
 		befriended = true;
 	}
-	
+
 	public void draw(Graphics g, int gridScale) {
 		if (gameEnded) {
 			int xpos = homeRoom.getCol()*gridScale;
@@ -82,11 +82,11 @@ public class Wumpus extends Agent {
 			int half = 5*gridScale / 2;
     	    int eighth = 5*gridScale / 8;
 	        int sixteenth = 5*gridScale / 16;
-			
+
 			// draw the Wumpus' room first
 			homeRoom.setVisible();
 			homeRoom.draw(g, gridScale);
-			
+
 			///////// DANCING LOGIC /////////
 			if (count == 20) {
 				faceRight = true;
@@ -102,12 +102,12 @@ public class Wumpus extends Agent {
 				count++;
 				g.drawImage(image ,xpos+half-eighth-sixteenth, ypos+half-eighth-sixteenth, radius, radius, null);
 			}
-			
-			//////  DIFFERENT TEXT FOR DIFFERENT SITUATIONS ///////// 
+
+			//////  DIFFERENT TEXT FOR DIFFERENT SITUATIONS /////////
 			if (lose) {
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+				g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 				g.drawString("YOU GOT EATEN",250, half);
-				g.setFont(new Font("ComicSans", Font.PLAIN, 30)); 
+				g.setFont(new Font("ComicSans", Font.PLAIN, 30));
 				g.drawString("HAHAHAHAHAHAHAHA",gen.nextInt(500), gen.nextInt(500));
 				g.drawString("HAHAHAHAHAHAHAHA",gen.nextInt(500), gen.nextInt(500));
 			}
@@ -124,9 +124,9 @@ public class Wumpus extends Agent {
 				else {
 					moveTextPos--;
 				}
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+				g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 				g.drawString("YOU INSULTED THE WUMPUS AND HE JUST CAME AND ATE YOU",moveTextPos, half);
-				g.setFont(new Font("ComicSans", Font.PLAIN, 30)); 
+				g.setFont(new Font("ComicSans", Font.PLAIN, 30));
 				g.drawString("HAHAHAHAHAHAHAHA",gen.nextInt(500), gen.nextInt(500));
 				g.drawString("HAHAHAHAHAHAHAHA",gen.nextInt(500), gen.nextInt(500));
 			}
@@ -143,7 +143,7 @@ public class Wumpus extends Agent {
 				else {
 					moveTextPos--;
 				}
-				g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+				g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 				g.drawString("CONGRATS, YOU BEFRIENDED THE WUMPUS!",moveTextPos, half);
 			}
 		}

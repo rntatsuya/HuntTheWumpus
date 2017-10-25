@@ -1,7 +1,7 @@
 /*
 	Tatsuya Yokota
 	WordCounter.java
-	11/06/2016 
+	11/06/2016
 referenced for method of writing file in Java using BufferReader
 http://www.mkyong.com/java/how-to-write-to-file-in-java-bufferedwriter-example/	*/
 
@@ -24,7 +24,7 @@ public class WordCounter {
 	private int totalWordCount;
 	private int removeCommonWords = 0;
 	private String trendWords;
-	
+
 	public WordCounter() {
 		initMap = new BSTMap<String, Integer>(new AscendingStringComparator<String>());
 		reconstructedMap = new BSTMap<String, Integer>(new AscendingStringComparator<String>());
@@ -32,14 +32,14 @@ public class WordCounter {
 		commonWords = new ArrayList<String>();
 	//	trendWords = System.console().readLine("Enter trend words you would like to search the count for (divide each word with a space): ");
 	}
-	
+
 	public void clear() {
 		initMap = new BSTMap<String, Integer>(new AscendingStringComparator<String>());
 		reconstructedMap = new BSTMap<String, Integer>(new AscendingStringComparator<String>());
 		totalWordCount = 0;
 		commonWords = new ArrayList<String>();
 	}
-	
+
 	// loads in words from a text file and puts them into the intiMap BSTMap object
 	public void loadFromOriginalWordsFile( String filename ) throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -56,12 +56,12 @@ public class WordCounter {
 			}
 		}
 	}
-	
-	// used to load in common words stored in the commonWords.txt file and puts them in 
+
+	// used to load in common words stored in the commonWords.txt file and puts them in
 	// the commonWords arraylist
 	public void loadCommonWordsFile() throws FileNotFoundException, IOException {
 		// creating array with common words
-		try (BufferedReader br = new BufferedReader(new FileReader("commonWords.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("./words/commonWords.txt"))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] parse = line.split("[^a-zA-Z]");
@@ -74,8 +74,8 @@ public class WordCounter {
 			}
 		}
 	}
-	
-	// allows the user to dynamically set the trend words and print its count 
+
+	// allows the user to dynamically set the trend words and print its count
 	// through user input
 	public void showTrendWords() {
 		String[] parse = trendWords.split("[^a-zA-Z]");
@@ -86,55 +86,55 @@ public class WordCounter {
 				}
 			}
 	}
-	
+
 	public int getTotalWordCount() {
 		return totalWordCount;
 	}
-	
+
 	public int getUniqueWordCount() {
 		return this.initMap.size();
 	}
-	
+
 	// gets the frequency of the word from the initMap BSTMap object
 	public int getInitMapKeyCount( String word ) {
 		Integer count = initMap.get(word.toLowerCase());
 		if (count == null) {
 			return 0;
-		} 
+		}
 		return count;
 	}
-	
+
 	// gets the frequency of the word from the reconstructedMap BSTMap object
 	public int getReconstructedMapKeyCount( String word ) {
 		Integer count = reconstructedMap.get(word);
 		if (count == null) {
 			return 0;
-		} 
+		}
 		return count;
 	}
-	
+
 	// method to return arraylist storing the common words
 	public ArrayList<String> getCommonWords() {
 		return commonWords;
 	}
-	
-	// returns the ratio of the number of times that word appeared 
+
+	// returns the ratio of the number of times that word appeared
 	public double getFrequency( String word ) {
 		if (initMap.get(word) == null) {
 			return 0.0;
 		}
-		
+
 		return (double)(initMap.get(word))/(double)(totalWordCount);
 	}
-	
+
 	public BSTMap<String,Integer> getInitMap() {
 		return this.initMap;
 	}
-	
+
 	public BSTMap<String,Integer> getReconstructedMap() {
 		return this.reconstructedMap;
 	}
-	
+
 // 	public String toString() {
 // 		String ret = "";
 // 		for (KeyValuePair<K,V> pair: map.getPairs()) {
@@ -142,11 +142,11 @@ public class WordCounter {
 // 			for (int i = 0; i < map.depth() - i; i++) {
 // 				indent += indent;
 // 			}
-// 			
-// 			ret += 
+//
+// 			ret +=
 // 		}
 // 	}
-	
+
 	// that writes out the word and its count into a text file
 	// removes common words depending on whether the user set the removeCommonWords field
 	// to a 0 or 1 in the Terminal (user is prompted)
@@ -156,7 +156,7 @@ public class WordCounter {
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-		
+
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			//bw.write("total_word_count " + this.totalWordCount + "\n");
@@ -175,7 +175,7 @@ public class WordCounter {
 					else {
 						bw.write(pair.toString() + "\n");
 					}
-					
+
 				}
 			}
 			bw.close();
@@ -183,11 +183,11 @@ public class WordCounter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private int convertStringInt(String count) {
 		return Integer.valueOf( count );
 	}
-	
+
 	// reads and reconstructs a map
 	public void readWordCountFile( String filename ) throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -210,29 +210,29 @@ public class WordCounter {
 			}
 		}
 	}
-	
+
 	public static void main( String[] args ) throws FileNotFoundException, IOException {
 		WordCounter counter = new WordCounter();
-		
+
 		long start = System.currentTimeMillis();
 		counter.loadFromOriginalWordsFile(args[0]);
 		long totalTime = System.currentTimeMillis() - start;
 		System.out.println("Loading time: " + totalTime);
-		
+
 // 		start = System.currentTimeMillis();
 // 		counter.writeWordCountFile(args[1]);
 // 		totalTime = System.currentTimeMillis() - start;
 // 		System.out.println("Writing time: " + totalTime);
 // 		System.out.println("Number of Unique Words: " + counter.getUniqueWordCount());
 // 		System.out.println("Total number of words: " + counter.getTotalWordCount());
-		
+
 		if (counter.getFrequency("good") != 0) {
 			System.out.println("hi");
 		}
-// 		
+//
 // 		// dynamically getting frequency count for trending words with user input
 // 		counter.showTrendWords();
-		
+
  		//manually getting frequency count for trending words
 // 		System.out.println("Frequency of Trending Words");
 // 		System.out.println("Gangnam:   " + counter.getInitMapKeyCount("Gangnam"));
@@ -242,16 +242,16 @@ public class WordCounter {
 // 		System.out.println("President:   " + counter.getInitMapKeyCount("President"));
 // 		System.out.println("Obama:   " + counter.getInitMapKeyCount("Obama"));
 
-		// checking output of most common words txt file		
+		// checking output of most common words txt file
 // 		counter.loadCommonWordsFile();
 // 		for (String word : counter.getCommonWords()) {
 // 			System.out.println(word);
 // 		}
-		
+
 //		int test = counter.convertStringInt("19");
-		
-		
-		
+
+
+
 		// test code
 		// String filename = "short.txt";
 // 	  	counter.loadFromOriginalWordsFile(filename);
@@ -261,4 +261,3 @@ public class WordCounter {
 //  		counter.writeWordCountFile("redo_counts_short.txt");
 	}
 }
-

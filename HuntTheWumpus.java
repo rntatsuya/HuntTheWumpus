@@ -45,7 +45,7 @@ public class HuntTheWumpus extends JFrame {
     private int gridScale; // width (and height) of each square in the grid
     private Control control;
     private Hunter hunter1;
-    private Hunter hunter2;    
+    private Hunter hunter2;
     private Wumpus wumpus;
     private boolean mounted1;
     private boolean mounted2;
@@ -58,25 +58,25 @@ public class HuntTheWumpus extends JFrame {
     private JLabel aimWisely;
     private int happinessCount;
     private boolean multiplayer;
-    
+
 	// controls whether the simulation is playing or exiting
 	private enum PlayState { PLAY, STOP }
 	private PlayState state= PlayState.PLAY;
-	
+
 	public HuntTheWumpus(Landscape scape, int scale) throws FileNotFoundException, IOException {
 		super("Hunt The Wumpus");
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
-		
+
 		this.scape = scape;
         this.gridScale = scale;
-		
+
 		this.canvas = new LandscapePanel( this.scape.getCols() * this.gridScale,
                                          this.scape.getRows() * this.gridScale );
 		this.add( this.canvas, BorderLayout.CENTER );
 		this.pack();
 		this.setVisible( true );
-		
-		// add the all the components 
+
+		// add the all the components
 		JButton quit = new JButton("Quit");
 		JButton restart = new JButton("Restart");
 		JButton trippy = new JButton("Trippy");
@@ -90,7 +90,7 @@ public class HuntTheWumpus extends JFrame {
 		JPanel panelDialogue = new JPanel( new FlowLayout(FlowLayout.CENTER));
 		JPanel panelDown = new JPanel( new FlowLayout(FlowLayout.CENTER));
 		JPanel panelUp = new JPanel( new FlowLayout(FlowLayout.LEFT));
-		
+
 		// add components to each panel
 		panelUp.add( quit );
 		panelUp.add( restart );
@@ -102,23 +102,23 @@ public class HuntTheWumpus extends JFrame {
 		panelDown.setLayout(new BoxLayout(panelDown,BoxLayout.Y_AXIS)); // stack on top
 		panelDown.add(panelInputs);
 		panelDown.add(panelDialogue);
-		
+
 		// add panels to the BorderLayout
 		this.add( panelUp, BorderLayout.NORTH);
 		this.add( panelDown, BorderLayout.SOUTH);
 		this.pack();
-		
+
 		// add the control
 		control = new Control();
 		this.addKeyListener(control);
 		this.setFocusable(true);
 		this.requestFocus();
-		
+
 		quit.addActionListener( control );
 		restart.addActionListener( control );
 		trippy.addActionListener(control);
 		tell.addActionListener(control);
-		
+
 		// check if the game is multiplayer
 		if (!scape.multiplayer()) {
 			hunter1 = scape.getHunter1();
@@ -127,7 +127,7 @@ public class HuntTheWumpus extends JFrame {
 			hunter1 = scape.getHunter1();
 			hunter2 = scape.getHunter2();
 		}
-		
+
 		// initialize necessary booleans and references
 		wumpus = scape.getWumpus();
 		mounted1 = false;
@@ -135,27 +135,27 @@ public class HuntTheWumpus extends JFrame {
 		gameEnded = false;
 		tripping = false;
 		happinessCount = 0;
-		
+
 		// load the wordCounter with good and bad words
 		goodWordCounter = new WordCounter();
-		goodWordCounter.loadFromOriginalWordsFile("positive-words.txt");
+		goodWordCounter.loadFromOriginalWordsFile("./words/positive-words.txt");
 		badWordCounter = new WordCounter();
-		badWordCounter.loadFromOriginalWordsFile("bad-words.txt");
+		badWordCounter.loadFromOriginalWordsFile("./words/bad-words.txt");
 	}
 
-	// used to regain focus to the canvas after pressing buttons 
+	// used to regain focus to the canvas after pressing buttons
 	protected void focus() {
 		this.requestFocus();
 	}
-	
+
 	public LandscapePanel getCanvas() {
 		return canvas;
 	}
-	
+
 	public boolean getTrippy() {
 		return tripping;
 	}
-	
+
 	/**
      * This inner class provides the panel on which Landscape elements
      * are drawn.
@@ -178,17 +178,17 @@ public class HuntTheWumpus extends JFrame {
          * Method overridden from JComponent that is responsible for
          * drawing components on the screen.  The supplied Graphics
          * object is used to draw.
-         * 
+         *
          * @param g     the Graphics object used for drawing
          */
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
-            scape.draw( g, gridScale );    
+            scape.draw( g, gridScale );
         } // end paintComponent
-        
+
     } // end LandscapePanel
-	
+
 // 	public static synchronized void playSound(final String url) {
 // 		new Thread(new Runnable() {
 // 		// The wrapper thread is unnecessary, unless it blocks on the
@@ -199,17 +199,17 @@ public class HuntTheWumpus extends JFrame {
 //         		AudioInputStream inputStream = AudioSystem.getAudioInputStream(
 //           			Main.class.getResourceAsStream(url));
 //         		clip.open(inputStream);
-//         		clip.start(); 
+//         		clip.start();
 //       		} catch (Exception e) {
 //         		System.err.println(e.getMessage());
 //       		}
 //     	}
 //   		}).start();
 // 	}
-// 	
+//
 	private class Control extends KeyAdapter implements ActionListener {
-		
-		
+
+
         public void keyTyped(KeyEvent e) {
            // System.out.println( "Key Pressed: " + e.getKeyChar() );
             if (gameEnded) {
@@ -480,7 +480,7 @@ public class HuntTheWumpus extends JFrame {
 				}
 				if (e.getKeyChar() == '\n') {
 					if (!mounted2) {
-						System.out.println("Arrow is mounted!"); 
+						System.out.println("Arrow is mounted!");
 	//					playSound("mountArrow.wav").run();
 						aimWisely.setText("Aim wisely, young one...");
 						mounted2 = true;
@@ -490,10 +490,10 @@ public class HuntTheWumpus extends JFrame {
 						aimWisely.setText("Find the Wumpus!");
 						mounted2 = false;
 					}
-				}			
+				}
 			}
         }
-		
+
 		// all the button and text input logic ///////////////////////////////
         public void actionPerformed(ActionEvent event) {
             if( event.getActionCommand().equalsIgnoreCase("Trippy") ) {
